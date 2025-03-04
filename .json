@@ -1,0 +1,21 @@
+{
+  "image":"11notes/github-runner",
+  "name":"github-runner",
+  "root":"/home/runner",
+  
+  "semver":{
+    "version":"2.322.0",
+    "latest":"2.322.0"
+  },
+
+  "readme":{
+    "description":"github runner",
+    "parent":{
+      "image":"mcr.microsoft.com/dotnet/runtime-deps",
+      "url":"https://hub.docker.com/r/microsoft/dotnet-runtime-deps/"
+    },
+    "built":{
+      "actions/runner":"https://github.com/actions/runner"
+    }
+  }
+}
