@@ -88,6 +88,7 @@ jobs:
           echo "WORKFLOW_GITHUB_RELEASE=${input_release:-true}" >> $GITHUB_ENV;
           echo "WORKFLOW_GITHUB_README=${input_readme:-true}" >> $GITHUB_ENV;
           echo "WORKFLOW_GRYPE_SCAN=${json_grype_scan:-true}" >> $GITHUB_ENV;
+          echo "WORKFLOW_GRYPE_FAIL=${json_grype_fail:-true}" >> $GITHUB_ENV;
           echo "WORKFLOW_GRYPE_SEVERITY_CUTOFF=${json_grype_severity:-high}" >> $GITHUB_ENV;
 
           : # create tags for semver, stable and other shenanigans
@@ -169,6 +170,7 @@ jobs:
         uses: anchore/scan-action@abae793926ec39a78ab18002bc7fc45bbbd94342
         with:
           image: localhost:5000/${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}
+          fail-build: ${{ env.WORKFLOW_GRYPE_FAIL }}
           severity-cutoff: ${{ env.WORKFLOW_GRYPE_SEVERITY_CUTOFF }}
           output-format: 'sarif'
           by-cve: true
@@ -179,6 +181,7 @@ jobs:
         uses: anchore/scan-action@abae793926ec39a78ab18002bc7fc45bbbd94342
         with:
           image: localhost:5000/${{ env.IMAGE }}:${{ env.IMAGE_SEMVER_PREFIX }}grype${{ env.IMAGE_SEMVER_SUFFIX }}
+          fail-build: false
           severity-cutoff: ${{ env.WORKFLOW_GRYPE_SEVERITY_CUTOFF }}
           output-format: 'table'
           by-cve: true

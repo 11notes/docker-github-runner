@@ -19,6 +19,6 @@
     }
   },
   "grype":{
-    "scan":false
+    "fail":false
   }
 }
