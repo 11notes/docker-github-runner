@@ -221,6 +221,7 @@ jobs:
 
       # RELEASE      
       - name: github / release / log
+        continue-on-error: true
         id: git-log
         run: |
           LOCAL_LAST_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
@@ -233,7 +234,7 @@ jobs:
           echo "${EOF}" >> ${GITHUB_OUTPUT}
 
       - name: github / release / markdown
-        if: env.WORKFLOW_GITHUB_RELEASE == 'true'
+        if: env.WORKFLOW_GITHUB_RELEASE == 'true'  && steps.git-log.outcome == 'success'
         id: git-release
         uses: 11notes/action-docker-release@v1
         with:
