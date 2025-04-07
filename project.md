@@ -6,6 +6,8 @@ ${{ title_volumes }}
 ${{ content_compose }}
 
 ${{ content_environment }}
+| `GITHUB_REPOSITORY` | username/repository (no URL required) | |
+| `GITHUB_TOKEN` | github access token with Administration permission set to write | |
 
 ${{ content_source }}
 
