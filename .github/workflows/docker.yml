@@ -161,8 +161,8 @@ jobs:
 
               core.exportVariable('WORKFLOW_CREATE_RELEASE', (opt.input?.release || true));
               core.exportVariable('WORKFLOW_CREATE_README', (opt.input?.readme || true));
-              core.exportVariable('WORKFLOW_GRYPE_FAIL_ON_SEVERITY', (opt.json?.grpye?.fail || true));
-              core.exportVariable('WORKFLOW_GRYPE_SEVERITY_CUTOFF', (opt.json?.grpye?.severity || 'high'));
+              core.exportVariable('WORKFLOW_GRYPE_FAIL_ON_SEVERITY', (opt.json?.grype?.fail || true));
+              core.exportVariable('WORKFLOW_GRYPE_SEVERITY_CUTOFF', (opt.json?.grype?.severity || 'high'));
 
 
 
