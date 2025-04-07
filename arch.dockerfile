@@ -1,72 +1,119 @@
-# Source: https://github.com/dotnet/dotnet-docker
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy AS build
+# :: Build / runner
+  FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy AS build
+  ARG TARGETARCH
+  ARG APP_VERSION
+  ENV BUILD_ROOT=/actions-runner
+  ENV RUNNER_CONTAINER_HOOKS_VERSION=0.6.1
+  ENV DOCKER_VERSION=28.0.4
+  ENV BUILDX_VERSION=0.21.2
+  ENV DEBIAN_FRONTEND=noninteractive
 
-ARG TARGETOS=linux
-ARG TARGETARCH
-ARG APP_IMAGE
-ARG APP_NAME
-ARG APP_VERSION
-ARG APP_ROOT
-ARG RUNNER_CONTAINER_HOOKS_VERSION=0.6.1
-ARG DOCKER_VERSION=27.5.1
-ARG BUILDX_VERSION=0.20.1
+  USER root
 
-ENV RUNNER_VERSION=${APP_VERSION}
+  RUN set -ex; \
+    apt update -y; \
+    apt install --no-install-recommends -y \
+      curl \
+      unzip; \
+    mkdir -p ${BUILD_ROOT};
 
-RUN apt update -y && apt install curl unzip -y
+  RUN set -ex; \
+    cd ${BUILD_ROOT}; \
+    case ${TARGETARCH} in \
+      amd64) \
+        curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${APP_VERSION}/actions-runner-linux-x64-${APP_VERSION}.tar.gz; \
+        curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip; \
+        curl -fLo docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz; \
+      ;; \
+      arm64) \
+        curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${APP_VERSION}/actions-runner-linux-arm64-${APP_VERSION}.tar.gz; \
+        curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip; \
+        curl -fLo docker.tgz https://download.docker.com/linux/static/stable/aarch64/docker-${DOCKER_VERSION}.tgz; \
+      ;; \
+    esac; \
+    tar xzf ./runner.tar.gz; \
+    rm runner.tar.gz; \
+    unzip ./runner-container-hooks.zip -d ./k8s; \
+    rm runner-container-hooks.zip; \
+    tar zxvf docker.tgz; \
+    rm -rf docker.tgz; \
+    mkdir -p /usr/local/lib/docker/cli-plugins; \
+    curl -fLo /usr/local/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}"; \
+    chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx;    
 
-WORKDIR /actions-runner
-RUN export RUNNER_ARCH=${TARGETARCH} \
-    && if [ "$RUNNER_ARCH" = "amd64" ]; then export RUNNER_ARCH=x64 ; fi \
-    && curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-${TARGETOS}-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz \
-    && tar xzf ./runner.tar.gz \
-    && rm runner.tar.gz
+# :: Header
+  FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy
 
-RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip \
-    && unzip ./runner-container-hooks.zip -d ./k8s \
-    && rm runner-container-hooks.zip
+  # :: arguments
+    ARG TARGETARCH
+    ARG APP_IMAGE
+    ARG APP_NAME
+    ARG APP_VERSION
+    ARG APP_ROOT
+    ARG APP_UID
+    ARG APP_GID
 
-RUN export RUNNER_ARCH=${TARGETARCH} \
-    && if [ "$RUNNER_ARCH" = "amd64" ]; then export DOCKER_ARCH=x86_64 ; fi \
-    && if [ "$RUNNER_ARCH" = "arm64" ]; then export DOCKER_ARCH=aarch64 ; fi \
-    && curl -fLo docker.tgz https://download.docker.com/${TARGETOS}/static/stable/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz \
-    && tar zxvf docker.tgz \
-    && rm -rf docker.tgz \
-    && mkdir -p /usr/local/lib/docker/cli-plugins \
-    && curl -fLo /usr/local/lib/docker/cli-plugins/docker-buildx \
-        "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
-    && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
+  # :: environment
+    ENV APP_IMAGE=${APP_IMAGE}
+    ENV APP_NAME=${APP_NAME}
+    ENV APP_VERSION=${APP_VERSION}
+    ENV APP_ROOT=${APP_ROOT}
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy
+    ENV DEBIAN_FRONTEND=noninteractive
+    ENV RUNNER_MANUALLY_TRAP_SIG=1
+    ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
+    ENV ImageOS=ubuntu22
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV RUNNER_MANUALLY_TRAP_SIG=1
-ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
-ENV ImageOS=ubuntu22
+  # :: multi-stage
+    COPY --from=build --chown=1000:123 /actions-runner ${APP_ROOT}
+    COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
 
-# 'gpg-agent' and 'software-properties-common' are needed for the 'add-apt-repository' command that follows
-RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common curl jq unzip \
-    && rm -rf /var/lib/apt/lists/*
+# :: Run
+  USER root
 
-# Configure git-core/ppa based on guidance here:  https://git-scm.com/download/linux
-RUN add-apt-repository ppa:git-core/ppa \
-    && apt update -y \
-    && apt install -y git \
-    && rm -rf /var/lib/apt/lists/*
+  # :: install application
+    RUN set -ex; \
+      apt update -y; \
+      apt install --no-install-recommends -y \
+        sudo \
+        lsb-release \
+        gpg-agent \
+        software-properties-common \
+        curl \
+        jq \
+        unzip; \
+       rm -rf /var/lib/apt/lists/*;
 
-RUN adduser --disabled-password --gecos "" --uid 1001 runner \
-    && groupadd docker --gid 123 \
-    && usermod -aG sudo runner \
-    && usermod -aG docker runner \
-    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
-    && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
+    RUN set -ex; \
+      add-apt-repository ppa:git-core/ppa; \
+      apt update -y; \
+      apt install --no-install-recommends -y \
+        git; \
+      rm -rf /var/lib/apt/lists/*;
 
-WORKDIR /home/runner
+    RUN set -ex; \
+      adduser --disabled-password --gecos "" --uid 1000 runner; \
+      groupadd docker --gid 123; \
+      usermod -aG sudo runner; \
+      usermod -aG docker runner; \
+      echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers; \
+      echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers;
 
-COPY --chown=runner:docker --from=build /actions-runner .
-COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
+    RUN set -ex; \
+      cd ${APP_ROOT}; \
+      install -o root -g root -m 755 docker/* /usr/bin/; \
+      rm -rf docker;
 
-RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
+  # :: copy filesystem changes and set correct permissions
+    COPY ./rootfs /
+    RUN set -ex; \
+      chmod +x -R /usr/local/bin; \
+      chown -R 1000:123 \
+        ${APP_ROOT};
 
-USER runner
+# :: Volumes
+  VOLUME ["${APP_ROOT}"]
+
+# :: Start
+  USER runner
+  ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
