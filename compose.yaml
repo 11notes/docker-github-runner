@@ -1,6 +1,6 @@
-name: "github"
+name: "docker-node"
 services:
-  runner:
+  runner01:
     deploy:
       resources:
         limits:
