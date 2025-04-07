@@ -60,6 +60,7 @@ jobs:
           script: |
             const { existsSync, readFileSync } = require('node:fs');
             const { resolve } = require('node:path');
+            const { inspect } = require('node:util');
             const inputs = `${{ toJSON(github.event.inputs) }}`;
             const opt = {input:{}, dot:{}};            
 
@@ -85,6 +86,8 @@ jobs:
             }catch(e){
               core.setFailed(e);
             }
+
+            core.info(inspect(opt, {showHidden:false, depth:null, colors:true}));
 
             const docker = {
               image:{
