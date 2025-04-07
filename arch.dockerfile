@@ -39,7 +39,7 @@
     rm -rf docker.tgz; \
     mkdir -p /usr/local/lib/docker/cli-plugins; \
     curl -fLo /usr/local/lib/docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}"; \
-    chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx;    
+    chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx;
 
 # :: Header
   FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy
