@@ -1,24 +1,23 @@
-name: "docker-node"
+name: "github"
 services:
   runner01:
+    runtime: sysbox-runc
     deploy:
       resources:
         limits:
-          cpus: '24.00'
-          memory: 16G
+          cpus: '8.00'
+          memory: 4G
         reservations:
           cpus: '1.00'
           memory: 1G
     image: "11notes/github-runner:2.323.0"
-    container_name: "docker-node-runner01"
-    hostname: "docker-node-runner01"
     environment:
       TZ: "Europe/Zurich"
-      GITHUB_REPOSITORY: "11notes/docker-node"
-      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      RUNNER_NAME: "runner01"
+      RUNNER_REPO: "11notes/docker-node"
+      RUNNER_ADMINISTRATION_TOKEN: ${RUNNER_ADMINISTRATION_TOKEN}
     volumes:
-      - "/run/docker.sock:/var/run/docker.sock:ro"
-      - "var:/home/runner"
+      - "var:/runner"
     restart: "always"
 
 volumes:
