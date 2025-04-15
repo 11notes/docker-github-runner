@@ -6,4 +6,4 @@ ARG APP_VERSION=2.323.0
   COPY --chown=1001:121 ./rootfs /
   RUN set -ex; \
     chmod +x /usr/bin/startup.sh;
-  USER runnerIst ja
+  USER runner
