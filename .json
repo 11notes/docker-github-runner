@@ -11,11 +11,11 @@
   "readme":{
     "description":"github runner",
     "parent":{
-      "image":"mcr.microsoft.com/dotnet/runtime-deps",
-      "url":"https://hub.docker.com/r/microsoft/dotnet-runtime-deps/"
+      "image":"ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind",
+      "url":"https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner-dind.ubuntu-22.04.dockerfile"
     },
     "built":{
-      "actions/runner":"https://github.com/actions/runner"
+      "actions/runner":"https://github.com/actions/actions-runner-controller"
     }
   },
   "grype":{
