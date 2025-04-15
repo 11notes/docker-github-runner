@@ -35,9 +35,6 @@ services:
         limits:
           cpus: '8.00'
           memory: 4G
-        reservations:
-          cpus: '1.00'
-          memory: 1G
     image: "11notes/github-runner:2.323.0"
     environment:
       TZ: "Europe/Zurich"
@@ -121,4 +118,4 @@ volumes:
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-github-runner/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-github-runner/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-github-runner/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 15.04.2025, 08:49:39 (CET)*
+*created 15.04.2025, 09:09:02 (CET)*
