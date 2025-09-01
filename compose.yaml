@@ -7,7 +7,7 @@ services:
         limits:
           cpus: '8.00'
           memory: 4G
-    image: "11notes/github-runner:2.327.0"
+    image: "11notes/github-runner:2.328.0"
     environment:
       TZ: "Europe/Zurich"
       RUNNER_NAME: "runner01"

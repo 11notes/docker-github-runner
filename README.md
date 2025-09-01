@@ -1,7 +1,7 @@
 ![banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # GITHUB-RUNNER
-![size](https://img.shields.io/docker/image-size/11notes/github-runner/2.327.0?color=0eb305)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![version](https://img.shields.io/docker/v/11notes/github-runner/2.327.0?color=eb7a09)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![pulls](https://img.shields.io/docker/pulls/11notes/github-runner?color=2b75d6)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)[<img src="https://img.shields.io/github/issues/11notes/docker-GITHUB-RUNNER?color=7842f5">](https://github.com/11notes/docker-GITHUB-RUNNER/issues)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![swiss_made](https://img.shields.io/badge/Swiss_Made-FFFFFF?labelColor=FF0000&logo=data:image/svg%2bxml;base64,PHN2ZyB2ZXJzaW9uPSIxIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0idHJhbnNwYXJlbnQiLz4KICA8cGF0aCBkPSJtMTMgNmg2djdoN3Y2aC03djdoLTZ2LTdoLTd2LTZoN3oiIGZpbGw9IiNmZmYiLz4KPC9zdmc+)
+![size](https://img.shields.io/docker/image-size/11notes/github-runner/2.328.0?color=0eb305)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![version](https://img.shields.io/docker/v/11notes/github-runner/2.328.0?color=eb7a09)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![pulls](https://img.shields.io/docker/pulls/11notes/github-runner?color=2b75d6)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)[<img src="https://img.shields.io/github/issues/11notes/docker-GITHUB-RUNNER?color=7842f5">](https://github.com/11notes/docker-GITHUB-RUNNER/issues)![5px](https://github.com/11notes/defaults/blob/main/static/img/transparent5x2px.png?raw=true)![swiss_made](https://img.shields.io/badge/Swiss_Made-FFFFFF?labelColor=FF0000&logo=data:image/svg%2bxml;base64,PHN2ZyB2ZXJzaW9uPSIxIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0idHJhbnNwYXJlbnQiLz4KICA8cGF0aCBkPSJtMTMgNmg2djdoN3Y2aC03djdoLTZ2LTdoLTd2LTZoN3oiIGZpbGw9IiNmZmYiLz4KPC9zdmc+)
 
 github runner
 
@@ -22,7 +22,7 @@ services:
         limits:
           cpus: '8.00'
           memory: 4G
-    image: "11notes/github-runner:2.327.0"
+    image: "11notes/github-runner:2.328.0"
     environment:
       TZ: "Europe/Zurich"
       RUNNER_NAME: "runner01"
@@ -48,14 +48,14 @@ volumes:
 # MAIN TAGS 🏷️
 These are the main tags for the image. There is also a tag for each commit and its shorthand sha256 value.
 
-* [2.327.0](https://hub.docker.com/r/11notes/github-runner/tags?name=2.327.0)
+* [2.328.0](https://hub.docker.com/r/11notes/github-runner/tags?name=2.328.0)
 * [latest](https://hub.docker.com/r/11notes/github-runner/tags?name=latest)
 
 # REGISTRIES ☁️
 ```
-docker pull 11notes/github-runner:2.327.0
-docker pull ghcr.io/11notes/github-runner:2.327.0
-docker pull quay.io/11notes/github-runner:2.327.0
+docker pull 11notes/github-runner:2.328.0
+docker pull ghcr.io/11notes/github-runner:2.328.0
+docker pull quay.io/11notes/github-runner:2.328.0
 ```
 
 # SOURCE 💾
@@ -76,4 +76,4 @@ docker pull quay.io/11notes/github-runner:2.327.0
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-github-runner/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-github-runner/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-github-runner/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 24.07.2025, 17:17:38 (CET)*
+*created 01.09.2025, 23:10:58 (CET)*
