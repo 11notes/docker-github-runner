@@ -1,25 +1,23 @@
 {
-  "image":"11notes/github-runner",
-  "name":"github-runner",
-  "root":"/home/runner",
-  "platform":"amd64,arm64",
-
-  "semver":{
-    "version":"2.328.0",
-    "latest":"2.328.0"
+  "image": "11notes/github-runner",
+  "name": "github-runner",
+  "root": "/home/runner",
+  "platform": "amd64,arm64",
+  "semver": {
+    "version": "2.329.0",
+    "latest": "2.329.0"
   },
-
-  "readme":{
-    "description":"github runner",
-    "parent":{
-      "image":"ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind",
-      "url":"https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner-dind.ubuntu-22.04.dockerfile"
+  "readme": {
+    "description": "github runner",
+    "parent": {
+      "image": "ghcr.io/actions-runner-controller/actions-runner-controller/actions-runner-dind",
+      "url": "https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner-dind.ubuntu-22.04.dockerfile"
     },
-    "built":{
-      "actions/runner":"https://github.com/actions/actions-runner-controller"
+    "built": {
+      "actions/runner": "https://github.com/actions/actions-runner-controller"
     }
   },
-  "grype":{
-    "fail":false
+  "grype": {
+    "fail": false
   }
 }
