@@ -1,6 +1,6 @@
 name: "github"
 services:
-  runner01:
+  runner:
     runtime: sysbox-runc
     cpus: "32.0"
     mem_reservation: "32G"
@@ -8,13 +8,13 @@ services:
     image: "11notes/github-runner:2.329.0"
     environment:
       TZ: "Europe/Zurich"
-      RUNNER_NAME: "runner01"
-      RUNNER_REPO: "11notes/docker-node"
-      RUNNER_ADMINISTRATION_TOKEN: ${RUNNER_ADMINISTRATION_TOKEN}
+      RUNNER_NAME: "runner"
+      RUNNER_REPO: "11notes/docker-distroless"
+      RUNNER_ADMINISTRATION_TOKEN: "${RUNNER_ADMINISTRATION_TOKEN}"
       RUNNER_LABELS: "x64,linux"
     volumes:
-      - "var:/runner"
+      - "runner.var:/runner"
     restart: "always"
 
 volumes:
-  var:
+  runner.var:
