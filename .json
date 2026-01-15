@@ -4,7 +4,7 @@
   "root": "/home/runner",
   "platform": "amd64,arm64",
   "semver": {
-    "version": "2.330.0"
+    "version": "2.331.0"
   },
   "readme": {
     "description": "github runner",
