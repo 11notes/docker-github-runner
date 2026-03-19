@@ -25,7 +25,7 @@ jobs:
           UUID=$(curl -s https://github.com/actions-runner-controller/actions-runner-controller/pkgs/container/actions-runner-controller%2Factions-runner-dind/versions | grep 'tag=latest' | awk -F 'dind/' '{print $NF}' | awk -F '?' '{print $1}')
           echo "LATEST_VERSION=$(curl -s https://github.com/actions-runner-controller/actions-runner-controller/pkgs/container/actions-runner-controller%2Factions-runner-dind/versions | grep -oE 'dind/'${UUID}'\?tag=v[[:alnum:]]+.[[:alnum:]]+.[[:alnum:]]+' | awk -F '=' '{print $NF}' | head -n 1 | sed 's|v||')" >> "${GITHUB_ENV}"
           export LATEST_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --max-count=1` | sed 's|v||')
-          echo "WORKFLOW_UPDATE_BASE64JSON=$(echo '{"version":"'${LATEST_VERSION}'", "tag":"'${LATEST_TAG}'", "unraid":true, "nobody":true}' | base64 -w 0)" >> "${GITHUB_ENV}"
+          echo "WORKFLOW_UPDATE_BASE64JSON=$(echo '{"version":"'${LATEST_VERSION}'", "tag":"'${LATEST_TAG}'", "unraid":false, "nobody":false}' | base64 -w 0)" >> "${GITHUB_ENV}"
 
       - name: call org.update
         uses: the-actions-org/workflow-dispatch@3133c5d135c7dbe4be4f9793872b6ef331b53bc7
