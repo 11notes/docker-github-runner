@@ -15,5 +15,3 @@ ${{ content_source }}
 ${{ content_parent }}
 
 ${{ content_built }}
-
-${{ content_tips }}
