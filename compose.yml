@@ -5,7 +5,7 @@ services:
     cpus: "32.0"
     mem_reservation: "32G"
     mem_limit: "64G"
-    image: "11notes/github-runner:2.333.0"
+    image: "11notes/github-runner:2.333.1"
     environment:
       TZ: "Europe/Zurich"
       RUNNER_NAME: "runner"
